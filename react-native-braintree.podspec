@@ -24,7 +24,10 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React"
-  # ...
-  # s.dependency "..."
+  s.dependency "Braintree"
+  s.dependency "Braintree/DataCollector"
+  s.dependency "Braintree/PaymentFlow"
+  s.dependency "Braintree/Apple-Pay"
+
 end
 
