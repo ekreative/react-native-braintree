@@ -11,4 +11,5 @@ export default {
     run3DSecureCheck: RNBraintree.run3DSecureCheck,
     tokenizeCard: RNBraintree.tokenizeCard,
     runApplePay: RNBraintreeApplePay && RNBraintreeApplePay.runApplePay,
+    requestPayPalBillingAgreement: RNBraintree.requestPayPalBillingAgreement,
 }
