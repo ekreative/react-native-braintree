@@ -130,6 +130,19 @@ RNBraintree.run3DSecureCheck({
     .catch((error) => console.log(error));
 
 ```
+
+##### Request PayPal billing agreement
+```javascript
+import RNBraintree from '@ekreative/react-native-braintree';
+
+RNBraintree.requestPayPalBillingAgreement({
+    clientToken: 'CLIENT_TOKEN_GENERATED_ON_SERVER_SIDE',
+    description: 'BILLING_AGRREEMENT_DESCRIPTION',
+    localeCode: 'LOCALE_CODE'
+    })
+    .then(result => console.log(result))
+    .catch((error) => console.log(error));
+```
 ### iOS
 ##### Get if Apple Pay available
 ```javascript
