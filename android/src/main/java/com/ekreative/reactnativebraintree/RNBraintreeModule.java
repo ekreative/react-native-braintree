@@ -53,6 +53,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
     private Promise mPromise;
     private BraintreeFragment mBraintreeFragment;
     private String mDeviceData;
+    private String mToken;
     private static final int GOOGLE_PAYMENT_REQUEST_CODE = 79129;
 
     public RNBraintreeModule(ReactApplicationContext reactContext) {
@@ -294,7 +295,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
     }
 
     public void setup(final String token) {
-        if (mBraintreeFragment == null) {
+        if (mBraintreeFragment == null || !token.equals(mToken)) {
             try {
                 mBraintreeFragment = BraintreeFragment.newInstance((AppCompatActivity) getCurrentActivity(), token);
                 mBraintreeFragment.addListener(new BraintreeCancelListener() {
@@ -330,6 +331,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
                 mPromise.reject(e.getMessage());
             }
         }
+        mToken = token;
     }
 
     public void sendResult(final WritableMap result) {
