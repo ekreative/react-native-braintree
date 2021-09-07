@@ -54,6 +54,10 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 repositories {
@@ -68,10 +72,10 @@ repositories {
         url "$rootDir/../node_modules/jsc-android/dist"
     }
     maven {
-        url "https://cardinalcommerce.bintray.com/android"
+        url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
         credentials {
-            username 'braintree-team-sdk@cardinalcommerce'
-            password '220cc9476025679c4e5c843666c27d97cfb0f951'
+            username 'braintree_team_sdk'
+            password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
         }
     }
     google()
@@ -81,8 +85,14 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
-    implementation 'com.braintreepayments.api:drop-in:4.6.0'
-    implementation 'com.google.android.gms:play-services-wallet:18.1.2'
+    implementation 'com.google.android.gms:play-services-wallet:18.1.3'
+    implementation 'com.braintreepayments.api:data-collector:4.5.0'
+    implementation 'com.braintreepayments.api:google-pay:4.5.0'
+    implementation 'com.braintreepayments.api:paypal:4.5.0'
+    implementation 'com.braintreepayments.api:three-d-secure:4.5.0'
+    implementation 'com.braintreepayments.api:card:4.5.0'
+    implementation 'com.braintreepayments.api:three-d-secure:4.5.0'
+
 }
 
 def configureReactNativePom(def pom) {
