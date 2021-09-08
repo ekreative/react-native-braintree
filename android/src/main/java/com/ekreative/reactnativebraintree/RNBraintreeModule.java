@@ -2,6 +2,7 @@
 
 package com.ekreative.reactnativebraintree;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -67,7 +68,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
         switch (requestCode) {
             case BraintreeRequestCodes.GOOGLE_PAY:
                 if (mGooglePayClient != null) {
@@ -87,6 +88,13 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
                     );
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        if(mCurrentActivity != null){
+            mCurrentActivity.setIntent(intent);
         }
     }
 
