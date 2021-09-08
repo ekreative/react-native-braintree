@@ -38,12 +38,6 @@ declare module '@ekreative/react-native-braintree' {
     companyName: string;
   }
 
-  interface PayPalBillingAgreementOptions {
-    clientToken: string;
-    description: string;
-    localeCode: string;
-  }
-
   // Export
 
   interface RNBraintreeModule {
@@ -54,7 +48,6 @@ declare module '@ekreative/react-native-braintree' {
     ): Promise<BraintreeResponse>;
     tokenizeCard(options: TokenizeCardOptions): Promise<BraintreeResponse>;
     runApplePay(options: RunApplePayOptions): Promise<BraintreeResponse>;
-    requestPayPalBillingAgreement(options: PayPalBillingAgreementOptions): Promise<BraintreeResponse>;
   }
 
   const RNBraintree: RNBraintreeModule;

@@ -1,18 +1,3 @@
 <!-- AndroidManifest.xml -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ekreative.reactnativebraintree">
-
-    <application >
-        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
-        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="${applicationId}.braintree" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
+<manifest package="com.ekreative.reactnativebraintree"/>
