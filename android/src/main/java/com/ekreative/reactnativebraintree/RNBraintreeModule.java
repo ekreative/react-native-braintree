@@ -3,24 +3,32 @@
 package com.ekreative.reactnativebraintree;
 
 import android.content.Context;
+import android.content.Intent;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.braintreepayments.api.BraintreeClient;
+import com.braintreepayments.api.BraintreeRequestCodes;
+import com.braintreepayments.api.BrowserSwitchResult;
 import com.braintreepayments.api.Card;
 import com.braintreepayments.api.CardClient;
 import com.braintreepayments.api.DataCollector;
 import com.braintreepayments.api.GooglePayClient;
 import com.braintreepayments.api.GooglePayRequest;
+import com.braintreepayments.api.PayPalAccountNonce;
 import com.braintreepayments.api.PayPalCheckoutRequest;
 import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalPaymentIntent;
+import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
 import com.braintreepayments.api.ThreeDSecureClient;
 import com.braintreepayments.api.ThreeDSecurePostalAddress;
 import com.braintreepayments.api.ThreeDSecureRequest;
 import com.braintreepayments.api.ThreeDSecureResult;
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -30,9 +38,9 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
 
-public class RNBraintreeModule extends ReactContextBaseJavaModule {
+public class RNBraintreeModule extends ReactContextBaseJavaModule
+        implements ActivityEventListener, LifecycleEventListener {
 
-    private static final int GOOGLE_PAYMENT_REQUEST_CODE = 79129;
     private final Context mContext;
     private final FragmentActivity mCurrentActivity;
     private Promise mPromise;
@@ -41,8 +49,12 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
     private BraintreeClient mBraintreeClient;
     private PayPalClient mPayPalClient;
     private GooglePayClient mGooglePayClient;
-    private CardClient mCardClient;
     private ThreeDSecureClient mThreeDSecureClient;
+
+    @Override
+    public String getName() {
+        return "RNBraintree";
+    }
 
     public RNBraintreeModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -50,12 +62,60 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
         mContext = reactContext;
         mCurrentActivity = (FragmentActivity) getCurrentActivity();
 
-        //todo: handle paypal and google pay result
+        reactContext.addLifecycleEventListener(this);
+        reactContext.addActivityEventListener(this);
     }
 
     @Override
-    public String getName() {
-        return "RNBraintree";
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        switch (requestCode) {
+            case BraintreeRequestCodes.GOOGLE_PAY:
+                if (mGooglePayClient != null) {
+                    mGooglePayClient.onActivityResult(
+                            resultCode,
+                            intent,
+                            this::handleGooglePayResult
+                    );
+                }
+                break;
+            case BraintreeRequestCodes.THREE_D_SECURE:
+                if (mThreeDSecureClient != null) {
+                    mThreeDSecureClient.onActivityResult(
+                            resultCode,
+                            intent,
+                            this::handleThreeDSecureResult
+                    );
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onHostResume() {
+        if (mBraintreeClient != null && mCurrentActivity != null) {
+            BrowserSwitchResult browserSwitchResult =
+                    mBraintreeClient.deliverBrowserSwitchResult(mCurrentActivity);
+            if (browserSwitchResult != null) {
+                switch (browserSwitchResult.getRequestCode()) {
+                    case BraintreeRequestCodes.PAYPAL:
+                        if (mPayPalClient != null) {
+                            mPayPalClient.onBrowserSwitchResult(
+                                    browserSwitchResult,
+                                    this::handlePayPalResult
+                            );
+                        }
+                        break;
+                    case BraintreeRequestCodes.THREE_D_SECURE:
+                        if (mThreeDSecureClient != null) {
+                            mThreeDSecureClient.onBrowserSwitchResult(
+                                    browserSwitchResult,
+                                    this::handleThreeDSecureResult
+                            );
+                        }
+                        break;
+                }
+            }
+        }
     }
 
     @ReactMethod
@@ -76,14 +136,29 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
             }
             if (mCurrentActivity != null) {
                 mPayPalClient = new PayPalClient(mBraintreeClient);
-                PayPalCheckoutRequest request = new PayPalCheckoutRequest(parameters.getString("amount"));
+                PayPalCheckoutRequest request = new PayPalCheckoutRequest(
+                        parameters.getString("amount")
+                );
                 request.setCurrencyCode(currency);
                 request.setIntent(PayPalPaymentIntent.AUTHORIZE);
                 mPayPalClient.tokenizePayPalAccount(
                         mCurrentActivity,
                         request,
-                        e -> promise.reject(e.getMessage()));
+                        e -> handlePayPalResult(null, e));
             }
+        }
+    }
+
+    private void handlePayPalResult(
+            @Nullable PayPalAccountNonce payPalAccountNonce,
+            @Nullable Exception error
+    ) {
+        if (error != null) {
+            handleError(error);
+            return;
+        }
+        if (payPalAccountNonce != null) {
+            sendPaymentMethodNonceResult(payPalAccountNonce.getString());
         }
     }
 
@@ -103,7 +178,6 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
             if (parameters.hasKey("currencyCode")) {
                 currency = parameters.getString("currencyCode");
             }
-
             if (mCurrentActivity != null) {
                 mGooglePayClient = new GooglePayClient(mBraintreeClient);
 
@@ -125,8 +199,18 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
                 mGooglePayClient.requestPayment(
                         mCurrentActivity,
                         googlePayRequest,
-                        e -> promise.reject(e.getMessage()));
+                        e -> handleGooglePayResult(null, e));
             }
+        }
+    }
+
+    private void handleGooglePayResult(PaymentMethodNonce nonce, Exception error) {
+        if (error != null) {
+            handleError(error);
+            return;
+        }
+        if (nonce != null) {
+            sendPaymentMethodNonceResult(nonce.getString());
         }
     }
 
@@ -139,7 +223,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
         } else {
             setup(parameters.getString("clientToken"));
 
-            mCardClient = new CardClient(mBraintreeClient);
+            CardClient cardClient = new CardClient(mBraintreeClient);
 
             Card card = new Card();
 
@@ -163,15 +247,13 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
                 card.setPostalCode(parameters.getString("postalCode"));
             }
 
-            mCardClient.tokenize(card, (cardNonce, exception) -> {
-                if (exception != null) {
-                    mPromise.reject(exception.getMessage());
+            cardClient.tokenize(card, (cardNonce, error) -> {
+                if (error != null) {
+                    handleError(error);
                     return;
                 }
                 if (cardNonce != null) {
-                    WritableMap result = Arguments.createMap();
-                    result.putString("nonce", cardNonce.getString());
-                    sendResult(result);
+                    sendPaymentMethodNonceResult(cardNonce.getString());
                 }
             });
         }
@@ -256,27 +338,52 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void handleThreeDSecureResult(ThreeDSecureResult threeDSecureResult, Exception error){
-        if(threeDSecureResult != null && threeDSecureResult.getTokenizedCard() != null){
-            WritableMap result = Arguments.createMap();
-            result.putString("nonce", threeDSecureResult.getTokenizedCard().getString());
-            sendResult(result);
+    private void handleThreeDSecureResult(ThreeDSecureResult threeDSecureResult, Exception error) {
+        if(error != null){
+            handleError(error);
+            return;
+        }
+        if (threeDSecureResult != null && threeDSecureResult.getTokenizedCard() != null) {
+            sendPaymentMethodNonceResult(threeDSecureResult.getTokenizedCard().getString());
         }
     }
 
 
-    public void setup(final String token) {
+    private void setup(final String token) {
         if (mBraintreeClient == null || !token.equals(mToken)) {
             mBraintreeClient = new BraintreeClient(mContext, token);
+
+            new DataCollector(mBraintreeClient).collectDeviceData(
+                    mContext,
+                    (result, e) -> mDeviceData = result);
+            mToken = token;
+
         }
-        new DataCollector(mBraintreeClient).collectDeviceData(
-                mContext,
-                (result, e) -> mDeviceData = result);
-        mToken = token;
     }
 
-    public void sendResult(final WritableMap result) {
-        result.putString("deviceData", mDeviceData);
-        mPromise.resolve(result);
+    private void handleError(Exception error){
+        if(mPromise != null){
+            //todo: handle cancellation
+            mPromise.reject(error.getMessage());
+        }
+    }
+
+    private void sendPaymentMethodNonceResult(String nonce) {
+        if(mPromise != null) {
+            WritableMap result = Arguments.createMap();
+            result.putString("deviceData", mDeviceData);
+            result.putString("nonce", nonce);
+            mPromise.resolve(result);
+        }
+    }
+
+    @Override
+    public void onHostPause() {
+        //NOTE: empty implementation
+    }
+
+    @Override
+    public void onHostDestroy() {
+        //NOTE: empty implementation
     }
 }
