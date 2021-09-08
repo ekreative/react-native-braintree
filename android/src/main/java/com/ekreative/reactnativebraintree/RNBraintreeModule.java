@@ -27,6 +27,7 @@ import com.braintreepayments.api.ThreeDSecureClient;
 import com.braintreepayments.api.ThreeDSecurePostalAddress;
 import com.braintreepayments.api.ThreeDSecureRequest;
 import com.braintreepayments.api.ThreeDSecureResult;
+import com.braintreepayments.api.UserCanceledException;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -43,7 +44,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         implements ActivityEventListener, LifecycleEventListener {
 
     private final Context mContext;
-    private final FragmentActivity mCurrentActivity;
+    private FragmentActivity mCurrentActivity;
     private Promise mPromise;
     private String mDeviceData;
     private String mToken;
@@ -61,7 +62,6 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         super(reactContext);
 
         mContext = reactContext;
-        mCurrentActivity = (FragmentActivity) getCurrentActivity();
 
         reactContext.addLifecycleEventListener(this);
         reactContext.addActivityEventListener(this);
@@ -93,7 +93,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
 
     @Override
     public void onNewIntent(Intent intent) {
-        if(mCurrentActivity != null){
+        if (mCurrentActivity != null) {
             mCurrentActivity.setIntent(intent);
         }
     }
@@ -347,7 +347,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
     }
 
     private void handleThreeDSecureResult(ThreeDSecureResult threeDSecureResult, Exception error) {
-        if(error != null){
+        if (error != null) {
             handleError(error);
             return;
         }
@@ -359,6 +359,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
 
     private void setup(final String token) {
         if (mBraintreeClient == null || !token.equals(mToken)) {
+            mCurrentActivity = (FragmentActivity) getCurrentActivity();
             mBraintreeClient = new BraintreeClient(mContext, token);
 
             new DataCollector(mBraintreeClient).collectDeviceData(
@@ -369,15 +370,17 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         }
     }
 
-    private void handleError(Exception error){
-        if(mPromise != null){
-            //todo: handle cancellation
+    private void handleError(Exception error) {
+        if (mPromise != null) {
+            if (error instanceof UserCanceledException) {
+                mPromise.reject("USER_CANCELLATION", "The user cancelled");
+            }
             mPromise.reject(error.getMessage());
         }
     }
 
     private void sendPaymentMethodNonceResult(String nonce) {
-        if(mPromise != null) {
+        if (mPromise != null) {
             WritableMap result = Arguments.createMap();
             result.putString("deviceData", mDeviceData);
             result.putString("nonce", nonce);
