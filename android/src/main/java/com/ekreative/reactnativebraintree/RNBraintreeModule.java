@@ -334,7 +334,11 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
             mThreeDSecureClient.performVerification(
                     mCurrentActivity,
                     threeDSecureRequest,
-                    (threeDSecureResult, e) -> {
+                    (threeDSecureResult, error) -> {
+                        if(error != null){
+                            handleError(error);
+                            return;
+                        }
                         if (threeDSecureResult != null) {
                             mThreeDSecureClient.continuePerformVerification(
                                     mCurrentActivity,
