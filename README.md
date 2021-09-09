@@ -8,16 +8,32 @@ Add this to your `build.gradle`
 ```groovy
     repositories {
         maven {
-            url "https://cardinalcommerce.bintray.com/android"
+            url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
             credentials {
-                username 'braintree-team-sdk@cardinalcommerce'
-                password '220cc9476025679c4e5c843666c27d97cfb0f951'
+                username 'braintree_team_sdk'
+                password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
             }
         }
     }
 ```
 
 In Your `AndroidManifest.xml`, `android:allowBackup="false"` can be replaced `android:allowBackup="true"`, it is responsible for app backup.
+
+Also, add this intent-filter to your main activity in `AndroidManifest.xml`
+
+```xml
+<activity>
+    ...
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="${applicationId}.braintree" />
+    </intent-filter>
+</activity>
+
+```
+**NOTE: Card payments does not work on rooted devices and Android Emulators**
 
 ## iOS Specific
 ```bash
