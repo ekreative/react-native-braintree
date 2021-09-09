@@ -19,6 +19,22 @@ Add this to your `build.gradle`
 
 In Your `AndroidManifest.xml`, `android:allowBackup="false"` can be replaced `android:allowBackup="true"`, it is responsible for app backup.
 
+Also, add this intent-filter to your main activity in `AndroidManifest.xml`
+
+```xml
+<activity>
+    ...
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="${applicationId}.braintree" />
+    </intent-filter>
+</activity>
+
+```
+**NOTE: Card payments does not work on rooted devices and Android Emulators**
+
 ## iOS Specific
 ```bash
 cd ios
@@ -128,21 +144,8 @@ RNBraintree.run3DSecureCheck({
     })
     .then(result => console.log(result))
     .catch((error) => console.log(error));
-
 ```
 
-##### Request PayPal billing agreement
-```javascript
-import RNBraintree from '@ekreative/react-native-braintree';
-
-RNBraintree.requestPayPalBillingAgreement({
-    clientToken: 'CLIENT_TOKEN_GENERATED_ON_SERVER_SIDE',
-    description: 'BILLING_AGRREEMENT_DESCRIPTION',
-    localeCode: 'LOCALE_CODE'
-    })
-    .then(result => console.log(result))
-    .catch((error) => console.log(error));
-```
 ### iOS
 ##### Get if Apple Pay available
 ```javascript
