@@ -148,6 +148,7 @@ RNBraintree.run3DSecureCheck({
 ##### Request PayPal billing agreement
 ```javascript
 import RNBraintree from '@ekreative/react-native-braintree';
+
 RNBraintree.requestPayPalBillingAgreement({
     clientToken: 'CLIENT_TOKEN_GENERATED_ON_SERVER_SIDE',
     description: 'BILLING_AGRREEMENT_DESCRIPTION',
