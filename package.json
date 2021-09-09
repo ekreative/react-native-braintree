@@ -1,7 +1,7 @@
 {
   "name": "@ekreative/react-native-braintree",
   "title": "React Native Braintree",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "TODO",
   "main": "index.js",
   "files": [
