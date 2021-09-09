@@ -144,7 +144,9 @@ RNBraintree.run3DSecureCheck({
     })
     .then(result => console.log(result))
     .catch((error) => console.log(error));
+
 ```
+
 ##### Request PayPal billing agreement
 ```javascript
 import RNBraintree from '@ekreative/react-native-braintree';
