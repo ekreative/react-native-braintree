@@ -21,6 +21,7 @@ import com.braintreepayments.api.PayPalAccountNonce;
 import com.braintreepayments.api.PayPalCheckoutRequest;
 import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalPaymentIntent;
+import com.braintreepayments.api.PayPalVaultRequest;
 import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
 import com.braintreepayments.api.ThreeDSecureClient;
@@ -155,6 +156,40 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
                         e -> handlePayPalResult(null, e));
             }
         }
+    }
+
+    @ReactMethod
+    public void requestPayPalBillingAgreement(
+            final ReadableMap parameters,
+            final Promise promise
+    ) {
+        mPromise = promise;
+
+        if (!parameters.hasKey("clientToken")) {
+            promise.reject("MISSING_CLIENT_TOKEN", "You must provide a clientToken");
+        }
+
+        setup(parameters.getString("clientToken"));
+
+        String description = parameters.hasKey("description") ?
+                parameters.getString("description") :
+                "";
+        String localeCode = parameters.hasKey("localeCode") ?
+                parameters.getString("localeCode") :
+                "US";
+
+        if (mCurrentActivity != null) {
+            mPayPalClient = new PayPalClient(mBraintreeClient);
+            PayPalVaultRequest request = new PayPalVaultRequest();
+            request.setLocaleCode(localeCode);
+            request.setBillingAgreementDescription(description);
+
+            mPayPalClient.tokenizePayPalAccount(
+                    mCurrentActivity,
+                    request,
+                    e -> handlePayPalResult(null, e));
+        }
+
     }
 
     private void handlePayPalResult(
@@ -335,7 +370,7 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
                     mCurrentActivity,
                     threeDSecureRequest,
                     (threeDSecureResult, error) -> {
-                        if(error != null){
+                        if (error != null) {
                             handleError(error);
                             return;
                         }
