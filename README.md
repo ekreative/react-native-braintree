@@ -35,6 +35,13 @@ Also, add this intent-filter to your main activity in `AndroidManifest.xml`
 ```
 **NOTE: Card payments does not work on rooted devices and Android Emulators**
 
+If your project uses Progurad, add the following lines into `proguard-rules.pro` file
+```
+-keep class com.cardinalcommerce.dependencies.internal.bouncycastle.**
+-keep class com.cardinalcommerce.dependencies.internal.nimbusds.**
+-keep class com.cardinalcommerce.shared.**
+```
+
 ## iOS Specific
 ```bash
 cd ios
