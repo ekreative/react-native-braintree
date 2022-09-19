@@ -1,16 +1,16 @@
 declare module '@ekreative/react-native-braintree' {
-  interface BraintreeResponse {
+  export interface BraintreeResponse {
     nonce: string;
     deviceData: string;
   }
 
-  interface BraintreeOptions {
+  export interface BraintreeOptions {
     clientToken: string;
     amount: string;
     currencyCode: string;
   }
 
-  interface Run3DSecureCheckOptions
+  export interface Run3DSecureCheckOptions
     extends Omit<BraintreeOptions, 'currencyCode'> {
     nonce: string;
     email: string;
@@ -25,7 +25,7 @@ declare module '@ekreative/react-native-braintree' {
     countryCode: string;
   }
 
-  interface TokenizeCardOptions {
+  export interface TokenizeCardOptions {
     clientToken: string;
     number: string;
     expirationMonth: string;
@@ -34,11 +34,11 @@ declare module '@ekreative/react-native-braintree' {
     postalCode?: string;
   }
 
-  interface RunApplePayOptions extends BraintreeOptions {
+  export interface RunApplePayOptions extends BraintreeOptions {
     companyName: string;
   }
 
-  interface PayPalBillingAgreementOptions {
+  export interface PayPalBillingAgreementOptions {
     clientToken: string;
     description: string;
     localeCode: string;
