@@ -40,8 +40,8 @@ declare module '@ekreative/react-native-braintree' {
 
   export interface PayPalBillingAgreementOptions {
     clientToken: string;
-    description: string;
-    localeCode: string;
+    description?: string;
+    localeCode?: string;
   }
 
   // Export
