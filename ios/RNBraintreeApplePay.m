@@ -72,17 +72,19 @@ RCT_EXPORT_METHOD(runApplePay: (NSDictionary *)options
 - (void)handleTokenizationResult: (BTApplePayCardNonce *)tokenizedApplePayPayment
                            error: (NSError *)error
                       completion: (void (^)(PKPaymentAuthorizationStatus))completion{
-    if (!tokenizedApplePayPayment) {
+    if (!tokenizedApplePayPayment && self.reject) {
         self.reject(error.localizedDescription, error.localizedDescription, error);
         completion(PKPaymentAuthorizationStatusFailure);
         [self resetPaymentResolvers];
         return;
     }
     [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
-        self.resolve(@{@"deviceData": deviceData,
-                       @"nonce": tokenizedApplePayPayment.nonce});
-        completion(PKPaymentAuthorizationStatusSuccess);
-        [self resetPaymentResolvers];
+        if (self.resolve) {
+            self.resolve(@{@"deviceData": deviceData,
+                        @"nonce": tokenizedApplePayPayment.nonce});
+            completion(PKPaymentAuthorizationStatusSuccess);
+            [self resetPaymentResolvers];
+        }
     }];
 }
 
