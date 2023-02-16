@@ -4,6 +4,7 @@
 #import "BraintreePayPal.h"
 #import "BTDataCollector.h"
 #import "BraintreePaymentFlow.h"
+#import "BraintreeThreeDSecure.h"
 
 @interface RNBraintree() <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -24,11 +25,10 @@ RCT_EXPORT_METHOD(showPayPalModule: (NSDictionary *)options
     self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient: self.apiClient];
-    payPalDriver.viewControllerPresentingDelegate = self;
 
-    BTPayPalRequest *request= [[BTPayPalRequest alloc] initWithAmount:amount];
+    BTPayPalCheckoutRequest *request= [[BTPayPalCheckoutRequest alloc] initWithAmount:amount];
     request.currencyCode = currencyCode;
-    [payPalDriver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+    [payPalDriver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (error) {
             reject(@"ONE_TIME_PAYMENT_FAILED", error.localizedDescription, nil);
             return;
@@ -54,13 +54,12 @@ RCT_EXPORT_METHOD(requestPayPalBillingAgreement: (NSDictionary *)options
     self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient: self.apiClient];
-    payPalDriver.viewControllerPresentingDelegate = self;
 
-    BTPayPalRequest *request= [[BTPayPalRequest alloc] init];
+    BTPayPalVaultRequest *request= [[BTPayPalVaultRequest alloc] init];
     if (description) {
         request.billingAgreementDescription = description;
     }
-    [payPalDriver requestBillingAgreement:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+    [payPalDriver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (error) {
             reject(@"REQUEST_BILLING_AGREEMENT_FAILED", error.localizedDescription, nil);
             return;
@@ -85,11 +84,11 @@ RCT_EXPORT_METHOD(tokenizeCard: (NSDictionary *)parameters
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient: self.apiClient];
 
-    BTCard *card =  [[BTCard alloc] initWithNumber:parameters[@"number"]
-                                   expirationMonth:parameters[@"expirationMonth"]
-                                    expirationYear:parameters[@"expirationYear"]
-                                               cvv:parameters[@"cvv"]];
-
+    BTCard *card = [[BTCard alloc] init];
+    card.number = parameters[@"number"];
+    card.expirationMonth = parameters[@"expirationMonth"];
+    card.expirationYear = parameters[@"expirationYear"];
+    card.cvv = parameters[@"cvv"];
     card.postalCode = parameters[@"postalCode"];
     card.shouldValidate = NO;
     
@@ -184,7 +183,7 @@ RCT_EXPORT_METHOD(run3DSecureCheck: (NSDictionary *)parameters
 
 #pragma mark - BTThreeDSecureRequestDelegate
 
-- (void)onLookupComplete:(BTThreeDSecureRequest *)request result:(BTThreeDSecureLookup *)result next:(void (^)(void))next {
+- (void)onLookupComplete:(BTThreeDSecureRequest *)request lookupResult:(BTThreeDSecureResult *)result next:(void (^)(void))next {
     next();
 }
 

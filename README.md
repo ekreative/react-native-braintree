@@ -75,7 +75,7 @@ In your `AppDelegate.m`:
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     ...
-    [BTAppSwitch setReturnURLScheme:self.paymentsURLScheme];
+    [BTAppContextSwitcher setReturnURLScheme:self.paymentsURLScheme];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -83,7 +83,7 @@ In your `AppDelegate.m`:
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 
     if ([url.scheme localizedCaseInsensitiveCompare:self.paymentsURLScheme] == NSOrderedSame) {
-        return [BTAppSwitch handleOpenURL:url options:options];
+        return [BTAppContextSwitcher handleOpenURL:url];
     }
     
     return [RCTLinkingManager application:application openURL:url options:options];
