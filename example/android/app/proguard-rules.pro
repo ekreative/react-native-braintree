@@ -8,3 +8,8 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+
+# https://github.com/ekreative/react-native-braintree#android-specific
+-keep class com.cardinalcommerce.dependencies.internal.bouncycastle.**
+-keep class com.cardinalcommerce.dependencies.internal.nimbusds.**
+-keep class com.cardinalcommerce.shared.**

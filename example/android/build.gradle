@@ -19,3 +19,17 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
+
+allprojects {
+    repositories {
+        maven {
+            // Braintree 3D Secure
+            // https://developers.braintreepayments.com/guides/3d-secure/client-side/android/v3#generate-a-client-token
+            url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
+            credentials {
+                username 'braintree_team_sdk'
+                password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
+            }
+        }
+    }
+}
