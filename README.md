@@ -6,8 +6,11 @@
 Add this to your `build.gradle`
 
 ```groovy
+allprojects {
     repositories {
         maven {
+            // Braintree 3D Secure
+            // https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side/android/v4#generate-a-client-token
             url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
             credentials {
                 username 'braintree_team_sdk'
@@ -15,6 +18,7 @@ Add this to your `build.gradle`
             }
         }
     }
+}
 ```
 
 In Your `AndroidManifest.xml`, `android:allowBackup="false"` can be replaced `android:allowBackup="true"`, it is responsible for app backup.
