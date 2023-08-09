@@ -2,7 +2,7 @@
   "name": "@ekreative/react-native-braintree",
   "title": "React Native Braintree",
   "version": "2.1.0",
-  "description": "TODO",
+  "description": "A react native interface for integrating payments using Braintree",
   "main": "index.js",
   "files": [
     "README.md",
