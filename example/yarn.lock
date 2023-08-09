@@ -1151,6 +1151,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@ekreative/react-native-braintree@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@ekreative/react-native-braintree/-/react-native-braintree-2.1.0.tgz#0ac8840c8aa6fc8b4c08dc14f9a510ffd2990029"
+  integrity sha512-iYvry6FVPaeALcGbQ10WIjpU62QLoRz/f4T0AYVYB8tnZ5v06Nx1VGSquTcKNj3A8B7yzsUcT0FaOhG+QJBFnQ==
+
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz#a23514e8fb9af1269d5f7788aa556798d61c6b59"
