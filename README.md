@@ -37,7 +37,7 @@ Also, add this intent-filter to your main activity in `AndroidManifest.xml`
 </activity>
 
 ```
-**NOTE: Card payments does not work on rooted devices and Android Emulators**
+**NOTE: Card payments do not work on rooted devices and Android Emulators**
 
 If your project uses Progurad, add the following lines into `proguard-rules.pro` file
 ```
@@ -171,7 +171,7 @@ RNBraintree.requestPayPalBillingAgreement({
     .catch((error) => console.log(error));
 ```
 ### iOS
-##### Get if Apple Pay available
+##### Check if Apple Pay is available
 ```javascript
 import RNBraintree from '@ekreative/react-native-braintree';
 
