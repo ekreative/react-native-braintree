@@ -12,4 +12,5 @@ export default {
     tokenizeCard: RNBraintree.tokenizeCard,
     runApplePay: RNBraintreeApplePay && RNBraintreeApplePay.runApplePay,
     requestPayPalBillingAgreement: RNBraintree.requestPayPalBillingAgreement,
+    getDeviceData: RNBraintree.getDeviceData,
 }
