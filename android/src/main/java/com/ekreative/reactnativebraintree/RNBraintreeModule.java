@@ -370,18 +370,18 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
                     mCurrentActivity,
                     threeDSecureRequest,
                     (threeDSecureResult, error) -> {
-                if (error != null) {
-                    handleError(error);
-                    return;
-                }
-                if (threeDSecureResult != null) {
-                    mThreeDSecureClient.continuePerformVerification(
+                        if (error != null) {
+                            handleError(error);
+                            return;
+                        }
+                        if (threeDSecureResult != null) {
+                            mThreeDSecureClient.continuePerformVerification(
                                     mCurrentActivity,
                                     threeDSecureRequest,
                                     threeDSecureResult,
                                     this::handleThreeDSecureResult);
-                }
-            });
+                        }
+                    });
         }
     }
 
