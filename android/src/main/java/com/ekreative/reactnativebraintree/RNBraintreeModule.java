@@ -370,20 +370,29 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
                     mCurrentActivity,
                     threeDSecureRequest,
                     (threeDSecureResult, error) -> {
-                        if (error != null) {
-                            handleError(error);
-                            return;
-                        }
-                        if (threeDSecureResult != null) {
-                            mThreeDSecureClient.continuePerformVerification(
+                if (error != null) {
+                    handleError(error);
+                    return;
+                }
+                if (threeDSecureResult != null) {
+                    mThreeDSecureClient.continuePerformVerification(
                                     mCurrentActivity,
                                     threeDSecureRequest,
                                     threeDSecureResult,
                                     this::handleThreeDSecureResult);
-                        }
-                    });
+                }
+            });
         }
     }
+
+    @ReactMethod
+    public void getDeviceData(final String clientToken, final Promise promise) {
+        setup(clientToken);
+        new DataCollector(mBraintreeClient).collectDeviceData(
+                mContext,
+                (result, e) -> promise.resolve(result));
+    }
+
 
     private void handleThreeDSecureResult(ThreeDSecureResult threeDSecureResult, Exception error) {
         if (error != null) {
