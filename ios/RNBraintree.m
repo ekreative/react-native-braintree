@@ -112,6 +112,16 @@ RCT_EXPORT_METHOD(run3DSecureCheck: (NSDictionary *)parameters
                   rejecter:reject];
 }
 
+RCT_EXPORT_METHOD(getDeviceData: (NSString *) clientToken
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject) {
+    self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
+    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
+    [self.dataCollector collectDeviceData:^(NSString * _Nonnull deviceData) {
+        resolve(deviceData);
+    }];
+}
+
 #pragma mark - 3D Secure
 - (void)startPaymentFlow: (NSDictionary *)parameters
                 resolver: (RCTPromiseResolveBlock)resolve

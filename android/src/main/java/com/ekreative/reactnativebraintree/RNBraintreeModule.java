@@ -385,6 +385,15 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         }
     }
 
+    @ReactMethod
+    public void getDeviceData(final String clientToken, final Promise promise) {
+        setup(clientToken);
+        new DataCollector(mBraintreeClient).collectDeviceData(
+                mContext,
+                (result, e) -> promise.resolve(result));
+    }
+
+
     private void handleThreeDSecureResult(ThreeDSecureResult threeDSecureResult, Exception error) {
         if (error != null) {
             handleError(error);

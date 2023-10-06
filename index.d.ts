@@ -55,6 +55,7 @@ declare module '@ekreative/react-native-braintree' {
     tokenizeCard(options: TokenizeCardOptions): Promise<BraintreeResponse>;
     runApplePay(options: RunApplePayOptions): Promise<BraintreeResponse>;
     requestPayPalBillingAgreement(options: PayPalBillingAgreementOptions): Promise<BraintreeResponse>;
+    getDeviceData(clientToken: string): Promise<string>;
   }
 
   const RNBraintree: RNBraintreeModule;
