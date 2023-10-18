@@ -117,7 +117,9 @@ RCT_EXPORT_METHOD(run3DSecureCheck: (NSDictionary *)parameters
                 resolver: (RCTPromiseResolveBlock)resolve
                 rejecter: (RCTPromiseRejectBlock)reject {
     NSString *clientToken = parameters[@"clientToken"];
-    self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
+    if (self.apiClient == NULL) {
+        self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
+    }
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
 
     BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];
