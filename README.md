@@ -139,9 +139,11 @@ RNBraintree.tokenizeCard({
 import RNBraintree from '@ekreative/react-native-braintree';
 
 RNBraintree.run3DSecureCheck({
+    // Optional if you ran `tokenizeCard()` or other Braintree methods before
     clientToken: 'CLIENT_TOKEN_GENERATED_ON_SERVER_SIDE',
     nonce: 'CARD_NONCE',
     amount: '122.00',
+    // Pass as many of the following fields as possible, but they're optional
     email: 'email@mail.com',
     firstname: '',
     lastname: '',
@@ -155,7 +157,6 @@ RNBraintree.run3DSecureCheck({
     })
     .then(result => console.log(result))
     .catch((error) => console.log(error));
-
 ```
 
 ##### Request PayPal billing agreement

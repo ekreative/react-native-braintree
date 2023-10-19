@@ -127,7 +127,12 @@ RCT_EXPORT_METHOD(getDeviceData: (NSString *) clientToken
                 resolver: (RCTPromiseResolveBlock)resolve
                 rejecter: (RCTPromiseRejectBlock)reject {
     NSString *clientToken = parameters[@"clientToken"];
-    self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
+    if (self.apiClient == NULL) {
+        if (clientToken == NULL) {
+            reject(@"MISSING_CLIENT_TOKEN", @"clientToken must be passed if Braintree methods weren't run before", nil);
+        }
+        self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
+    }
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
 
     BTThreeDSecureRequest *threeDSecureRequest = [[BTThreeDSecureRequest alloc] init];

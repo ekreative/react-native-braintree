@@ -306,8 +306,12 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
     public void run3DSecureCheck(final ReadableMap parameters, final Promise promise) {
         mPromise = promise;
 
-        if (!parameters.hasKey("clientToken")) {
-            promise.reject("You must provide a clientToken");
+        if (mBraintreeClient == null) {
+            String clientToken = parameters.getString("clientToken");
+            if (!parameters.hasKey("clientToken")) {
+                promise.reject("You must provide a clientToken");
+            }
+            setup(parameters.getString("clientToken"));
         }
 
         setup(parameters.getString("clientToken"));

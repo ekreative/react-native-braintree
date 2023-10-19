@@ -11,18 +11,21 @@ declare module '@ekreative/react-native-braintree' {
   }
 
   export interface Run3DSecureCheckOptions
-    extends Omit<BraintreeOptions, 'currencyCode'> {
+    extends Omit<BraintreeOptions, "currencyCode" | "clientToken"> {
     nonce: string;
-    email: string;
-    firstname: string;
-    lastname: string;
-    phoneNumber: string;
-    streetAddress: string;
+    /* Pass clientToken if previously no RNBraintree methods were run. */
+    clientToken?: string;
+    /* Provide as many of the following fields as possible. */
+    email?: string;
+    firstname?: string;
+    lastname?: string;
+    phoneNumber?: string;
+    streetAddress?: string;
     streetAddress2?: string;
-    city: string;
+    city?: string;
     region?: string;
-    postalCode: string;
-    countryCode: string;
+    postalCode?: string;
+    countryCode?: string;
   }
 
   export interface TokenizeCardOptions {
