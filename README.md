@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/react-native-braintree.svg)](https://www.npmjs.com/package/react-native-braintree)
+
 # @ekreative/react-native-braintree
 
 ## Getting started
