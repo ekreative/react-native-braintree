@@ -209,3 +209,15 @@ RNBraintree.runGooglePay({
 
 - [ ] Android. Check if we can split the logic in the `getDeviceData` method to call `new DataCollector(mBraintreeClient).collectDeviceData()` only once (it seems like it's currently may be called a second time from the `setup` method) https://github.com/ekreative/react-native-braintree/pull/37#issuecomment-1752470507
 - [ ] iOS. Try to use the new `getDeviceData` method in other methods, such as `tokenizeCard`, `showPayPalModule` https://github.com/ekreative/react-native-braintree/pull/37#issuecomment-1752470507
+
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
