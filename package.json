@@ -13,7 +13,7 @@
     "react-native-braintree.podspec"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier --log-level=warn --write \"**/*.{jsx,js,ts,tsx}\""
   },
   "repository": {
     "type": "git",
