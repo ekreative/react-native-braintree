@@ -11,7 +11,7 @@ declare module '@ekreative/react-native-braintree' {
   }
 
   export interface Run3DSecureCheckOptions
-    extends Omit<BraintreeOptions, "currencyCode" | "clientToken"> {
+    extends Omit<BraintreeOptions, 'currencyCode' | 'clientToken'> {
     nonce: string;
     /* Pass clientToken if previously no RNBraintree methods were run. */
     clientToken?: string;
@@ -57,7 +57,9 @@ declare module '@ekreative/react-native-braintree' {
     ): Promise<BraintreeResponse>;
     tokenizeCard(options: TokenizeCardOptions): Promise<BraintreeResponse>;
     runApplePay(options: RunApplePayOptions): Promise<BraintreeResponse>;
-    requestPayPalBillingAgreement(options: PayPalBillingAgreementOptions): Promise<BraintreeResponse>;
+    requestPayPalBillingAgreement(
+      options: PayPalBillingAgreementOptions,
+    ): Promise<BraintreeResponse>;
     getDeviceData(clientToken: string): Promise<string>;
   }
 
