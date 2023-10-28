@@ -13,6 +13,7 @@
     "react-native-braintree.podspec"
   ],
   "scripts": {
+    "lint": "eslint .",
     "format": "prettier --log-level=warn --write \"**/*.{jsx,js,ts,tsx}\""
   },
   "repository": {
@@ -37,6 +38,7 @@
   "devDependencies": {
     "prettier": "^3.0.3",
     "react": "^16.9.0",
-    "react-native": "^0.61.5"
+    "react-native": "^0.61.5",
+    "eslint": "^8.52.0"
   }
 }
