@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "format": "prettier --log-level=warn --write \"**/*.{jsx,js,ts,tsx}\""
+    "prettier:check": "prettier . -c --log-level=warn",
+    "prettier:format": "prettier --log-level=warn --write \"**/*.{jsx,js,ts,tsx}\""
   },
   "repository": {
     "type": "git",
