@@ -41,9 +41,10 @@ Create new Swift file with the name `RNBrainTree.swift` and paste the migrated c
 //  RNBrainTree.swift
 import Foundation
 import React
-import Braintree
+import BraintreeCore
+import BraintreeCard
+import BraintreeApplePay
 import BraintreePayPal
-import BraintreeCard 
 
 @objc(RNBraintree)
 class RNBraintree: NSObject, BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate {
