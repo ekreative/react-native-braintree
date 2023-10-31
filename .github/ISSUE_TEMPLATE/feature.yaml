@@ -3,10 +3,6 @@ description: "Suggest an idea for this project"
 title: "Feat:"
 labels: ["enhancement"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for suggesting a feature!
   - type: checkboxes
     attributes:
       label: Is there an existing request?
