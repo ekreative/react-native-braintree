@@ -1,7 +1,7 @@
 
 <div align="center">
 
-| NPM Version | Package Version | Android SDK | iOS SDK |
+| Published Version | Package Version | Android SDK | iOS SDK |
 |:-----------:|:---------------:|:-----------:|:-------:|
 |[![npm](https://img.shields.io/npm/v/react-native-braintree.svg)](https://www.npmjs.com/package/react-native-braintree) | [v2.4.0](https://github.com/ekreative/react-native-braintree/releases/tag/v2.4.0) | 28 | 12.0 |
 
