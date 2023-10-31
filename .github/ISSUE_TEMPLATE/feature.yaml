@@ -1,9 +1,9 @@
 name: "✨ Feature Request"
-description: "Suggest an idea for this project "
+description: "Suggest an idea for this project"
 title: "Feat:"
 labels: ["enhancement"]
 body:
- - type: markdown
+  - type: markdown
     attributes:
       value: |
         Thank you for suggesting a feature!
@@ -12,15 +12,15 @@ body:
       label: Is there an existing request?
       description: Please search open and closed issues to see if this request has already been made.
       options:
-      - label: I have searched for this request
-        required: true
+        - label: I have searched for this request
+          required: true
   - type: textarea
     attributes:
       label: Describe the feature request
       description: Please provide a concise description of the request, potential solutions, and additional context.
-    validations:
-      required: true
-       - type: checkboxes
+      validations:
+        required: true
+  - type: checkboxes
     attributes:
       label: "Record"
       options:
