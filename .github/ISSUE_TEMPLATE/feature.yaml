@@ -18,7 +18,6 @@ body:
     attributes:
       label: Describe the feature request
       description: Please provide a concise description of the request, potential solutions, and additional context.
-      validations:
         required: true
   - type: checkboxes
     attributes:
