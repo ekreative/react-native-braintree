@@ -237,5 +237,4 @@ If you want to read further you can follow these links
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
