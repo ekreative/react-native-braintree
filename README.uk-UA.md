@@ -1,8 +1,8 @@
 # @ekreative/react-native-braintree
 
-## Починаємо
+## Початок роботи
 
-## Спеціально для Android
+## Специфічно для Android
 Додайте це до свого `build.gradle`
 
 ```groovy
@@ -23,7 +23,7 @@ allprojects {
 
 У вашому `AndroidManifest.xml`, `android:allowBackup="false"` можна замінити `android:allowBackup="true"`, він відповідає за резервне копіювання програми.
 
-Крім того, додайте цей фільтр намірів до основної діяльності в `AndroidManifest.xml`
+Крім того, додайте наступний intent-filter до основного activity в `AndroidManifest.xml`
 
 ```xml
 <activity>
@@ -39,20 +39,20 @@ allprojects {
 ```
 **ПРИМІТКА: Платежі карткою не працюють на пристроях з рутованим доступом і емуляторах Android**
 
-Якщо ваш проект використовує Progurad, додайте наступні рядки у `proguard-rules.pro` файл
+Якщо ваш проект використовує Proguard, додайте наступні рядки у `proguard-rules.pro` файл
 ```
 -keep class com.cardinalcommerce.dependencies.internal.bouncycastle.**
 -keep class com.cardinalcommerce.dependencies.internal.nimbusds.**
 -keep class com.cardinalcommerce.shared.**
 ```
 
-## Особливо для iOS
+## Специфічно для iOS
 ```bash
 cd ios
 pod install
 ```
 ###### Налаштуйте нову схему URL-адреси
-Додайте схему URL-адреси пакета {BUNDLE_IDENTIFIER}.payments у свою програму Info через XCode або вручну в Info.plist. У вашому Info.plist ви повинні мати щось на зразок:
+Додайте схему URL-адреси пакета {BUNDLE_IDENTIFIER}.payments в Info свого додатка через XCode або вручну в Info.plist. У вашому Info.plist ви повинні мати щось на кшталт:
 
 ```xml 
 <key>CFBundleURLTypes</key>
@@ -102,7 +102,7 @@ pod install
 
 ## Використання
 
-##### Показати модуль PayPall
+##### Показати модуль PayPal
 
 ```javascript
 import RNBraintree from '@ekreative/react-native-braintree';
