@@ -143,6 +143,9 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
             if (parameters.hasKey("currencyCode")) {
                 currency = parameters.getString("currencyCode");
             }
+            if (parameters.hasKey("userAction") && PayPalCheckoutRequest.USER_ACTION_COMMIT.equals(parameters.getString("userAction"))) {
+                request.setUserAction(PayPalCheckoutRequest.USER_ACTION_COMMIT);
+            }
             if (mCurrentActivity != null) {
                 mPayPalClient = new PayPalClient(mBraintreeClient);
                 PayPalCheckoutRequest request = new PayPalCheckoutRequest(

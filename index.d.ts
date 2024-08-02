@@ -10,6 +10,13 @@ declare module '@ekreative/react-native-braintree' {
     currencyCode: string;
   }
 
+  export interface PayPalOptions {
+    clientToken: string;
+    amount: string;
+    currencyCode: string;
+    userAction?: 'commit' | '';
+  }
+
   export interface Run3DSecureCheckOptions
     extends Omit<BraintreeOptions, 'currencyCode' | 'clientToken'> {
     nonce: string;
@@ -50,7 +57,7 @@ declare module '@ekreative/react-native-braintree' {
   // Export
 
   interface RNBraintreeModule {
-    showPayPalModule(options: BraintreeOptions): Promise<BraintreeResponse>;
+    showPayPalModule(options: PayPalOptions): Promise<BraintreeResponse>;
     runGooglePay(options: BraintreeOptions): Promise<BraintreeResponse>;
     run3DSecureCheck(
       options: Run3DSecureCheckOptions,
