@@ -42,7 +42,7 @@ declare module '@ekreative/react-native-braintree' {
   }
 
   export interface PayPalOptions extends BraintreeOptions {
-    userAction?: 'commit' | null;
+    userAction?: 'commit';
   }
 
   export interface PayPalBillingAgreementOptions {
