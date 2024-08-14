@@ -50,6 +50,7 @@ RCT_EXPORT_METHOD(requestPayPalBillingAgreement: (NSDictionary *)options
                   rejecter: (RCTPromiseRejectBlock)reject) {
     NSString *clientToken = options[@"clientToken"];
     NSString *description = options[@"description"];
+    NSString *userAction = options[@"userAction"];
 
     self.apiClient = [[BTAPIClient alloc] initWithAuthorization: clientToken];
     self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
@@ -58,6 +59,9 @@ RCT_EXPORT_METHOD(requestPayPalBillingAgreement: (NSDictionary *)options
     BTPayPalVaultRequest *request= [[BTPayPalVaultRequest alloc] init];
     if (description) {
         request.billingAgreementDescription = description;
+    }
+    if (userAction && [@"commit" isEqualToString:userAction]) {
+        request.userAction = BTPayPalRequestUserActionCommit;
     }
     [payPalDriver tokenizePayPalAccountWithPayPalRequest:request completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (error) {

@@ -41,6 +41,10 @@ declare module '@ekreative/react-native-braintree' {
     companyName: string;
   }
 
+  export interface PayPalOptions extends BraintreeOptions {
+    userAction?: 'commit';
+  }
+
   export interface PayPalBillingAgreementOptions {
     clientToken: string;
     description?: string;
@@ -50,7 +54,7 @@ declare module '@ekreative/react-native-braintree' {
   // Export
 
   interface RNBraintreeModule {
-    showPayPalModule(options: BraintreeOptions): Promise<BraintreeResponse>;
+    showPayPalModule(options: PayPalOptions): Promise<BraintreeResponse>;
     runGooglePay(options: BraintreeOptions): Promise<BraintreeResponse>;
     run3DSecureCheck(
       options: Run3DSecureCheckOptions,

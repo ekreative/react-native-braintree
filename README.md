@@ -110,7 +110,9 @@ import RNBraintree from '@ekreative/react-native-braintree';
 RNBraintree.showPayPalModule({
     clientToken: 'CLIENT_TOKEN_GENERATED_ON_SERVER_SIDE',
     amount: '1.0',
-    currencyCode: 'EUR'
+    currencyCode: 'EUR',
+    // Change button text to “Complete Purchase", optional
+    userAction: 'commit',
     })
     .then(result => console.log(result))
     .catch((error) => console.log(error));
