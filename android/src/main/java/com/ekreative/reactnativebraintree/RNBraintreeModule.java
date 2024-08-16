@@ -134,7 +134,11 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         if (!parameters.hasKey("clientToken")) {
             promise.reject("You must provide a clientToken");
         } else {
-            setup(parameters.getString("clientToken"));
+            if (parameters.hasKey("appLinkReturnUrl")) {
+                setup(parameters.getString("clientToken"), parameters.getString("appLinkReturnUrl"));
+            } else {
+                setup(parameters.getString("clientToken"));
+            }
 
             String currency = "USD";
             if (!parameters.hasKey("amount")) {
@@ -416,6 +420,19 @@ public class RNBraintreeModule extends ReactContextBaseJavaModule
         if (mBraintreeClient == null || !token.equals(mToken)) {
             mCurrentActivity = (FragmentActivity) getCurrentActivity();
             mBraintreeClient = new BraintreeClient(mContext, token);
+
+            new DataCollector(mBraintreeClient).collectDeviceData(
+                    mContext,
+                    (result, e) -> mDeviceData = result);
+            mToken = token;
+
+        }
+    }
+
+    private void setup(final String token, final String appLinkReturnUrl) {
+        if (mBraintreeClient == null || !token.equals(mToken)) {
+            mCurrentActivity = (FragmentActivity) getCurrentActivity();
+            mBraintreeClient = new BraintreeClient(mContext, token, appLinkReturnUrl);
 
             new DataCollector(mBraintreeClient).collectDeviceData(
                     mContext,
