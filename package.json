@@ -1,7 +1,7 @@
 {
   "name": "@ekreative/react-native-braintree",
   "title": "React Native Braintree",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "node": ">=16",
   "description": "A react native interface for integrating payments using Braintree",
   "main": "index.js",
