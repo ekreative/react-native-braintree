@@ -1,4 +1,4 @@
-# @ekreative/react-native-braintree
+# Take a look at the https://github.com/msasinowski/react-native-expo-braintree
 
 ## Getting started
 
